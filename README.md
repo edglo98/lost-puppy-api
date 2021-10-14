@@ -6,7 +6,7 @@ Descarga el proyecto y ejecuta
 Clone the project
 
 ```bash
-  git clone https://github.com/edglo98/socket-chat.git
+  git clone https://github.com/edglo98/lost-puppy-api.git
 ```
 
 Ejecuta los comandos para instalar.
