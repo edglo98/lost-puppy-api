@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors'
+import bodyParser from 'body-parser'
 import routerUser from '../routes/user.js'
+import routerAuth from '../routes/auth.js'
 // import dbConection from '../database/config.js'
 export class Server {
   constructor () {
@@ -8,7 +10,8 @@ export class Server {
     this.app = express()
 
     this.paths = {
-      users: '/api/users'
+      users: '/api/users',
+      auth: '/api/auth'
     }
 
     // this.conectDB()
@@ -23,12 +26,14 @@ export class Server {
 
   middlewares () {
     this.app.use(cors())
+    this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(express.json())
     this.app.use(express.static('public'))
   }
 
   routes () {
     this.app.use(this.paths.users, routerUser)
+    this.app.use(this.paths.auth, routerAuth)
   }
 
   async getLocalIp () {
