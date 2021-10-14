@@ -24,8 +24,3 @@ export const comprobarJWT = (token = '') => {
     return [false, null]
   }
 }
-
-module.exports = {
-  generarJWT,
-  comprobarJWT
-}
