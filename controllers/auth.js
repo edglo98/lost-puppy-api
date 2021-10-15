@@ -4,14 +4,9 @@ import { generarJWT } from '../helpers/JWT.js'
 
 import Users from '../models/mongo/users.js'
 
+// Registro de usuarios
 export const googleAuth = async (req, res = response) => {
   const { token } = req.body
-  if (!token) {
-    return res.status(400).json({
-      ok: false,
-      msg: 'No hay el token'
-    })
-  }
 
   const googleUser = await validarGoogleToken(token)
   try {
@@ -44,4 +39,54 @@ export const googleAuth = async (req, res = response) => {
       msg: error
     })
   }
+}
+
+// Login
+export const login = async (req, res = response) => {
+  const { token } = req.body
+
+  const googleUser = await validarGoogleToken(token)
+  try {
+    if (!googleUser) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'No se verificó el token'
+      })
+    }
+
+    const user = await Users.findOne({ email: googleUser.email })
+
+    if (!user) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'Credenciales no encontradas'
+      })
+    }
+    const token = await generarJWT(user._id)
+
+    return res.status(200).json({
+      ok: true,
+      msg: user,
+      token
+    })
+  } catch (error) {
+    res.status(400).json({
+      ok: false,
+      msg: error
+    })
+  }
+}
+
+export const renewToken = async (req, res = response) => {
+  const uid = req.id
+
+  const token = await generarJWT(uid)
+
+  const user = await Users.findById(uid)
+
+  res.json({
+    ok: true,
+    msg: user,
+    token
+  })
 }
