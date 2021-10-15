@@ -1,34 +1,43 @@
 import express from 'express'
 import cors from 'cors'
+import bodyParser from 'body-parser'
 import routerUser from '../routes/user.js'
-// import dbConection from '../database/config.js'
+import routerAuth from '../routes/auth.js'
+import dbConection from '../database/config.js'
 export class Server {
   constructor () {
     this.port = process.env.PORT
     this.app = express()
 
     this.paths = {
-      users: '/api/users'
+      users: '/api/users',
+      auth: '/api/auth'
     }
 
-    // this.conectDB()
+    this.conectDB()
 
     this.middlewares()
     this.routes()
   }
 
-  // async conectDB () {
-  //   await dbConection()
-  // }
+  async conectDB () {
+    try {
+      await dbConection()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   middlewares () {
     this.app.use(cors())
+    this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(express.json())
     this.app.use(express.static('public'))
   }
 
   routes () {
     this.app.use(this.paths.users, routerUser)
+    this.app.use(this.paths.auth, routerAuth)
   }
 
   async getLocalIp () {
