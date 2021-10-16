@@ -12,13 +12,16 @@ const validator = [
   verifyFields
 ]
 
+// Registrar
 router.post('/google', validator, googleAuth)
 
+// Login
 router.post('/login', [
   check('token', 'Token is required').not().isEmpty(),
   verifyFields
 ], login)
 
+// Renovar token
 router.get('/renew', verifyJWT, renewToken)
 
 export default router
