@@ -3,7 +3,9 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import routerUser from '../routes/user.js'
 import routerAuth from '../routes/auth.js'
+import routerPet from '../routes/pet.js'
 import dbConection from '../database/config.js'
+import morgan from 'morgan'
 export class Server {
   constructor () {
     this.port = process.env.PORT
@@ -11,7 +13,8 @@ export class Server {
 
     this.paths = {
       users: '/api/users',
-      auth: '/api/auth'
+      auth: '/api/auth',
+      pet: '/api/pet'
     }
 
     this.conectDB()
@@ -33,11 +36,13 @@ export class Server {
     this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(express.json())
     this.app.use(express.static('public'))
+    this.app.use(morgan('dev'))
   }
 
   routes () {
     this.app.use(this.paths.users, routerUser)
     this.app.use(this.paths.auth, routerAuth)
+    this.app.use(this.paths.pet, routerPet)
   }
 
   async getLocalIp () {

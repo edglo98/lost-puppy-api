@@ -3,7 +3,7 @@
   "name": "rest-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -13,7 +13,8 @@
     "express-validator": "^6.13.0",
     "google-auth-library": "^7.10.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.10"
+    "mongoose": "^6.0.10",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.12",
