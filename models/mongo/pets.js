@@ -9,10 +9,10 @@ const PetSchema = Schema({
   },
   gender: {
     type: String,
-    required: true,
+    required: true
   },
   age: {
-    type: Number,
+    type: Number
   },
   breed: {
     type: String,
