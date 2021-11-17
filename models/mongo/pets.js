@@ -31,13 +31,20 @@ const PetSchema = Schema({
   },
   date: {
     type: Date
+  },
+  isLost: {
+    type: Boolean
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 
-PetSchema.method('toJSON', function () {
-  const { __v, _id, password, ...object } = this.toObject()
-  object.uid = _id
-  return object
-})
+// PetSchema.method('toJSON', function () {
+//   const { __v, _id, password, ...object } = this.toObject()
+//   object.uid = _id
+//   return object
+// })
 
 export default model('Pet', PetSchema)
