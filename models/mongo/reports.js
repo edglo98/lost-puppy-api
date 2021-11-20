@@ -17,6 +17,10 @@ const Report = Schema({
   date: {
     type: Date,
     required: true
+  },
+  msgUser: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 

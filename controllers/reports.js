@@ -3,7 +3,7 @@ import Reports from '../models/mongo/reports.js'
 
 export const getReports = async (req, res = response) => {
   try {
-    const allReports = await Reports.find({}).populate({ path: 'pet', populate: 'user' })
+    const allReports = await Reports.find({}).populate({ path: 'pet', populate: 'user' }).populate('msgUser')
     return res.status(200).json({
       ok: true,
       msg: allReports
@@ -35,11 +35,12 @@ export const getReport = async (req, res = response) => {
 
 export const addReport = async (req, res = response) => {
   try {
-    const { description, pet } = req.body
+    const { description, pet, user } = req.body
     const newReport = new Reports({
       description,
-      pet,
+      pet: JSON.parse(pet).id,
       date: new Date().toISOString(),
+      msgUser: JSON.parse(user)._id,
       isCheked: false
     })
 
@@ -49,6 +50,7 @@ export const addReport = async (req, res = response) => {
       res: newReport
     })
   } catch (error) {
+    console.log(error)
     return res.status(400).json({
       ok: false,
       msg: error
@@ -67,6 +69,22 @@ export const editCheked = async (req, res = response) => {
     return res.status(200).json({
       ok: true,
       msg: editReport
+    })
+  } catch (error) {
+    return res.status(400).json({
+      ok: false,
+      msg: error
+    })
+  }
+}
+
+export const getChat = async (req, res = response) => {
+  try {
+    const { id } = req.params
+    const chat = await Reports.find({ pet: id }).populate({ path: 'pet', populate: 'user' }).populate('msgUser').sort({ date: -1 })
+    return res.status(200).json({
+      ok: true,
+      msg: chat
     })
   } catch (error) {
     return res.status(400).json({
