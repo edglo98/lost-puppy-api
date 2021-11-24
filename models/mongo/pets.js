@@ -38,6 +38,9 @@ const PetSchema = Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
+  },
+  isDeleted: {
+    type: Boolean
   }
 })
 

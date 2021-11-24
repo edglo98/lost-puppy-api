@@ -18,7 +18,11 @@ const Report = Schema({
     type: Date,
     required: true
   },
-  msgUser: {
+  from: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  to: {
     type: Schema.Types.ObjectId,
     ref: 'User'
   }

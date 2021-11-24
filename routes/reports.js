@@ -4,8 +4,8 @@ const router = Router()
 
 router.post('/', addReport)
 router.put('/:id', editCheked)
-router.get('/', getReports)
+router.get('/:id', getReports)
 router.get('/:id', getReport)
-router.get('/chat/user/:id', getChat)
+router.get('/chat/user/', getChat)
 
 export default router

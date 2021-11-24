@@ -15,6 +15,7 @@ export const addPet = async (req, res = response) => {
       objIMG,
       isLost: true,
       user: JSON.parse(user)._id,
+      isDeleted: false,
       date: new Date().toISOString()
     })
     await newPet.save()
@@ -59,7 +60,9 @@ export const deletePet = async (req, res = response) => {
   try {
     const { id } = req.params
 
-    const delPet = await Pets.findByIdAndDelete(id)
+    const delPet = await Pets.findByIdAndUpdate(id)
+    delPet.isDeleted = true
+    await delPet.save()
 
     return res.status(200).json({
       ok: true,
@@ -76,7 +79,7 @@ export const deletePet = async (req, res = response) => {
 
 export const getPets = async (req, res = response) => {
   try {
-    const allPets = await Pets.find({ isLost: true }).populate('user')
+    const allPets = await Pets.find({ isLost: true, isDeleted: false }).populate('user')
     return res.status(200).json({
       ok: true,
       msg: allPets
@@ -115,7 +118,8 @@ export const getPeyByUserID = async (req, res = response) => {
   try {
     const { id, isLost } = req.body
     const search = {
-      user: id
+      user: id,
+      isDeleted: false
     }
     if (isLost !== 'null') search.isLost = isLost
 
